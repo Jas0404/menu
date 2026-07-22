@@ -6,177 +6,237 @@
     <title>Pratos do Dia • Menu Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <style>
-/* ===============================
-   RESET GERAL
-================================ */
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
+
 :root {
-    --primary: #f97316;
-    --primary-dark: #ea580c;
-    --secondary: #fff7ed;
-    --text: #1f2937;
-    --gray: #6b7280;
-    --success: #10b981;
+
+    --orange:#f97316;
+    --orange-dark:#ea580c;
+    --light:#fff7ed;
+    --text:#1f2937;
+
 }
+
 
 * {
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: #fff7ed;
-    color: var(--text);
-}
-
-
-/* ===============================
-   HEADER
-================================ */
-
-header {
-    backdrop-filter: blur(10px);
-    background: rgba(255,255,255,.9);
-}
-
-header h1 {
-    font-family: 'Playfair Display', serif;
-    letter-spacing: -1px;
-}
-
-header button {
-    transition: .3s ease;
-}
-
-header button:hover {
-    transform: translateY(-2px);
-}
-
-
-/* ===============================
-   BOTÃO CARRINHO
-================================ */
-
-#contador-carrinho {
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-weight:700;
-
-    animation:pulseCart 1.8s infinite;
-}
-
-
-@keyframes pulseCart {
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.15);
-    }
-
-    100%{
-        transform:scale(1);
-    }
-
-}
-
-
-
-/* ===============================
-   FILTROS
-================================ */
-
-#filters {
-
-    padding-bottom:5px;
-
-}
-
-
-.filter-btn {
-
-    cursor:pointer;
-
-    background:white;
-
-    border:1px solid #fed7aa;
-
-    color:#374151;
-
+    box-sizing:border-box;
     transition:.25s ease;
 
 }
 
 
-.filter-btn:hover {
 
+body {
+
+    font-family:'Inter',sans-serif;
     background:#fff7ed;
-
-    border-color:#fb923c;
-
-    transform:translateY(-3px);
+    color:var(--text);
 
 }
 
 
+
+h1,
+h2,
+h3 {
+
+    font-family:'Playfair Display',serif;
+
+}
+
+
+
+/* ==============================
+HEADER
+============================== */
+
+
+header {
+
+    background:white!important;
+
+}
+
+
+
+header .max-w-7xl {
+
+
+    padding-top:10px!important;
+    padding-bottom:10px!important;
+
+
+}
+
+
+
+header h1 {
+
+
+    font-size:2rem!important;
+
+
+}
+
+
+
+header button {
+
+
+    padding:9px 15px!important;
+    border-radius:18px!important;
+
+
+}
+
+
+
+header button:hover {
+
+
+    transform:translateY(-2px);
+
+
+}
+
+
+
+/* ==============================
+CARRINHO
+============================== */
+
+
+#contador-carrinho {
+
+
+    width:22px!important;
+    height:22px!important;
+    font-size:11px!important;
+
+
+}
+
+
+
+/* ==============================
+CONTEUDO
+============================== */
+
+
+main {
+
+
+    padding-top:25px!important;
+    padding-bottom:25px!important;
+
+
+}
+
+
+
+main h2 {
+
+
+    font-size:16px!important;
+
+
+}
+
+
+
+
+/* ==============================
+FILTROS
+============================== */
+
+
+#filters {
+
+
+    gap:8px!important;
+
+
+}
+
+
+
+.filter-btn {
+
+
+    padding:8px 16px!important;
+    border-radius:20px!important;
+    font-size:13px!important;
+
+
+}
+
+
+
 .filter-btn.active {
 
-    background:linear-gradient(
+
+    background:
+
+    linear-gradient(
         135deg,
         #f97316,
         #ea580c
     );
 
+
     color:white;
 
-    border:none;
-
-    box-shadow:
-    0 10px 25px rgba(249,115,22,.35);
 
 }
 
 
 
 
-/* ===============================
-   CARDS DOS PRATOS
-================================ */
+/* ==============================
+GRID
+============================== */
+
+
+#menu-grid {
+
+
+    gap:18px!important;
+
+
+}
+
+
+
+
+
+/* ==============================
+CARDS
+============================== */
 
 
 .card {
 
+
+    border-radius:20px!important;
     overflow:hidden;
-
-    background:white;
-
-    border-radius:25px;
-
-    cursor:pointer;
-
-    transition:
-    transform .35s ease,
-    box-shadow .35s ease;
 
 }
 
 
+
 .card:hover {
 
-    transform:
-    translateY(-10px);
+
+    transform:translateY(-6px);
 
     box-shadow:
-    0 25px 50px rgba(0,0,0,.12);
+
+    0 15px 35px rgba(0,0,0,.12);
+
 
 }
 
@@ -184,13 +244,10 @@ header button:hover {
 
 .card img {
 
-    width:100%;
 
-    height:240px;
-
+    height:190px!important;
     object-fit:cover;
 
-    transition:.5s ease;
 
 }
 
@@ -198,7 +255,19 @@ header button:hover {
 
 .card:hover img {
 
-    transform:scale(1.08);
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+.card .p-5 {
+
+
+    padding:15px!important;
+
 
 }
 
@@ -206,9 +275,10 @@ header button:hover {
 
 .card h3 {
 
-    font-family:
-    'Playfair Display',
-    serif;
+
+    font-size:18px!important;
+    margin-bottom:5px!important;
+
 
 }
 
@@ -216,45 +286,67 @@ header button:hover {
 
 .card p {
 
-    line-height:1.6;
+
+    font-size:13px!important;
+
+
+}
+
+
+
+.card .mt-6 {
+
+
+    margin-top:12px!important;
+
 
 }
 
 
 
 
-/* ===============================
-   PREÇO DO CARD
-================================ */
+/* ==============================
+BADGES
+============================== */
 
 
-.card .absolute.top-4.right-4 {
+.card .absolute.top-4 {
 
 
-    background:
-    linear-gradient(
-    135deg,
-    #f97316,
-    #fb923c
-    );
+    top:10px!important;
 
 
-    box-shadow:
-    0 8px 20px rgba(249,115,22,.35);
+}
+
+
+.card .absolute.left-4 {
+
+
+    left:10px!important;
+
+
+}
+
+
+.card .absolute.right-4 {
+
+
+    right:10px!important;
+
 
 }
 
 
 
-/* ===============================
-   MODAL
-================================ */
+/* ==============================
+MODAL
+============================== */
 
 
 #modal {
 
-    backdrop-filter:
-    blur(8px);
+
+    backdrop-filter:blur(6px);
 
 }
 
@@ -262,36 +354,10 @@ header button:hover {
 
 .modal-content {
 
-    animation:
-    modalShow .35s ease;
 
-}
+    max-width:580px!important;
+    border-radius:25px!important;
 
-
-
-@keyframes modalShow {
-
-
-    from {
-
-        opacity:0;
-
-        transform:
-        translateY(40px)
-        scale(.95);
-
-    }
-
-
-    to {
-
-        opacity:1;
-
-        transform:
-        translateY(0)
-        scale(1);
-
-    }
 
 }
 
@@ -299,7 +365,19 @@ header button:hover {
 
 #modal-image {
 
-    object-fit:cover;
+
+    height:250px!important;
+
+
+}
+
+
+
+.modal-content .p-8 {
+
+
+    padding:22px!important;
+
 
 }
 
@@ -307,9 +385,29 @@ header button:hover {
 
 #modal-name {
 
-    font-family:
-    'Playfair Display',
-    serif;
+
+    font-size:1.8rem!important;
+
+
+}
+
+
+
+#modal-short-desc {
+
+
+    font-size:15px!important;
+
+
+}
+
+
+
+#modal-ingredients {
+
+
+    gap:8px!important;
+
 
 }
 
@@ -318,179 +416,82 @@ header button:hover {
 #modal-ingredients li {
 
 
-    background:#fff7ed;
+    padding:8px!important;
+    font-size:13px!important;
+    border-radius:12px!important;
 
-    padding:10px 14px;
-
-    border-radius:15px;
-
-    transition:.2s;
 
 }
 
 
 
-#modal-ingredients li:hover {
 
-    transform:
-    translateX(5px);
-
-    background:#ffedd5;
-
-}
-
-
-
-/* ===============================
-   BOTÃO ADICIONAR PEDIDO
-================================ */
+/* ==============================
+BOTAO PEDIDO
+============================== */
 
 
 button.bg-orange-500 {
 
 
     background:
+
     linear-gradient(
         135deg,
         #f97316,
         #ea580c
-    );
-
-
-    transition:.3s;
-
-}
-
-
-
-button.bg-orange-500:hover {
-
-
-    transform:
-    translateY(-3px);
-
-    box-shadow:
-    0 15px 30px rgba(249,115,22,.4);
-
-}
-
-
-
-/* ===============================
-   ESTADO VAZIO
-================================ */
-
-
-#empty-state {
-
-    animation:
-    fade .4s ease;
-
-}
-
-
-@keyframes fade {
-
-
-from {
-
-opacity:0;
-
-}
-
-
-to {
-
-opacity:1;
-
-}
+    )!important;
 
 
 }
 
 
 
+/* ==============================
+TABLET
+============================== */
 
 
-/* ===============================
-   SCROLL PERSONALIZADO
-================================ */
+@media(max-width:1000px){
 
 
-::-webkit-scrollbar {
-
-width:8px;
-
-}
+#menu-grid {
 
 
-::-webkit-scrollbar-track {
+    grid-template-columns:repeat(3,1fr)!important;
 
-background:#ffedd5;
-
-}
-
-
-::-webkit-scrollbar-thumb {
-
-background:#fb923c;
-
-border-radius:20px;
-
-}
-
-
-
-
-/* ===============================
-   RESPONSIVIDADE TABLET
-================================ */
-
-
-@media(max-width:900px){
-
-
-header .max-w-7xl {
-
-    flex-direction:column;
-
-    gap:20px;
-
-}
-
-
-header .flex.items-center.gap-6 {
-
-    width:100%;
-
-    justify-content:center;
 
 }
 
 
 .card img {
 
-    height:220px;
 
-}
-
+    height:170px!important;
 
 
 }
 
 
-
-/* ===============================
-   RESPONSIVIDADE CELULAR
-================================ */
+}
 
 
-@media(max-width:600px){
+
+/* ==============================
+MOBILE
+============================== */
 
 
-body {
+@media(max-width:768px){
 
-    font-size:14px;
+
+
+header .max-w-7xl {
+
+
+    padding:8px 12px!important;
+    gap:8px!important;
+
 
 }
 
@@ -498,16 +499,39 @@ body {
 
 header h1 {
 
-    font-size:1.7rem!important;
+
+    font-size:1.25rem!important;
+
 
 }
 
 
+
+header .flex.items-center.gap-6 {
+
+
+    gap:8px!important;
+
+
+}
+
+
+
+header button {
+
+
+    width:100%;
+
+
+}
+
+
+
 main {
 
-    padding-left:15px!important;
 
-    padding-right:15px!important;
+    padding:12px!important;
+
 
 }
 
@@ -515,18 +539,44 @@ main {
 
 #filters {
 
-    overflow-x:auto;
 
+    overflow-x:auto;
     flex-wrap:nowrap;
+    scrollbar-width:none;
+
 
 }
 
 
+
+#filters::-webkit-scrollbar {
+
+
+    display:none;
+
+
+}
+
+
+
 .filter-btn {
 
-    flex-shrink:0;
 
-    padding:10px 16px!important;
+    flex-shrink:0;
+    padding:7px 12px!important;
+    font-size:11px!important;
+
+
+}
+
+
+
+#menu-grid {
+
+
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+
 
 }
 
@@ -534,7 +584,9 @@ main {
 
 .card {
 
-    border-radius:20px;
+
+    border-radius:16px!important;
+
 
 }
 
@@ -542,7 +594,53 @@ main {
 
 .card img {
 
-    height:190px;
+
+    height:135px!important;
+
+
+}
+
+
+
+.card .p-5 {
+
+
+    padding:12px!important;
+
+
+}
+
+
+
+.card h3 {
+
+
+    font-size:16px!important;
+
+
+}
+
+
+
+.card p {
+
+
+    font-size:12px!important;
+
+
+}
+
+
+
+/* MODAL */
+
+
+#modal {
+
+
+    padding:0!important;
+    align-items:flex-end!important;
+
 
 }
 
@@ -550,9 +648,11 @@ main {
 
 .modal-content {
 
-    width:95%!important;
 
-    border-radius:22px;
+    width:100%!important;
+    max-height:85vh!important;
+    border-radius:22px 22px 0 0!important;
+
 
 }
 
@@ -560,7 +660,19 @@ main {
 
 #modal-image {
 
-    height:190px!important;
+
+    height:140px!important;
+
+
+}
+
+
+
+.modal-content .p-8 {
+
+
+    padding:15px!important;
+
 
 }
 
@@ -568,15 +680,19 @@ main {
 
 #modal-name {
 
-    font-size:1.5rem!important;
+
+    font-size:1.3rem!important;
+
 
 }
 
 
 
-#modal-ingredients {
+#modal-short-desc {
 
-    grid-template-columns:1fr!important;
+
+    margin-bottom:12px!important;
+
 
 }
 
@@ -584,7 +700,10 @@ main {
 
 .border-t.pt-6 {
 
+
     flex-direction:column;
+    gap:10px!important;
+
 
 }
 
@@ -592,48 +711,78 @@ main {
 
 .border-t.pt-6 button {
 
-    width:100%;
 
+    width:100%!important;
     max-width:none!important;
 
-}
-
 
 }
 
 
 
-/* ===============================
-   CELULARES PEQUENOS
-================================ */
+}
 
 
-@media(max-width:380px){
+
+
+/* ==============================
+CELULAR PEQUENO
+============================== */
+
+
+@media(max-width:430px){
 
 
 .card img {
 
-    height:160px;
+
+    height:120px!important;
+
 
 }
+
+
+
+.card h3 {
+
+
+    font-size:15px!important;
+
+
+}
+
 
 
 header p {
 
-    font-size:11px;
+
+    font-size:10px!important;
+
+
+}
+
+
 
 }
 
 
-.filter-btn {
 
-    font-size:12px;
+@media(max-width:350px){
+
+
+.card img {
+
+
+    height:105px!important;
+
 
 }
 
 
 }
-    </style>
+
+
+</style>
 </head>
 <body class="bg-orange-50 font-sans">
     <!-- HEADER -->
