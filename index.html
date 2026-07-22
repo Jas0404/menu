@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratos do Dia • Menu Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&display=swap');
+        
+        :root {
+            --primary: #f97316;
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(249 115 22 / 0.25);
+        }
+        
+        .modal-content {
+            animation: modalPop 0.3s ease forwards;
+        }
+        
+        @keyframes modalPop {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #f97316;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgb(249 115 22 / 0.3);
+        }
+    </style>
+</head>
+<body class="bg-orange-50 font-sans">
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="">
+                    🍽️
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tighter text-gray-900" style="font-family: 'Playfair Display', serif;">Pratos do Dia</h1>
+                    <p class="text-xs text-orange-600 -mt-1 font-medium">Menu semanal • Responsivo</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-2 bg-white border border-orange-200 rounded-3xl px-5 py-2 text-sm font-medium text-gray-600">
+                    <i class="fa-solid fa-clock text-orange-500"></i>
+                    <span id="hora-atual" class="font-mono"></span>
+                </div>
+                
+                <button onclick="finalizarPedido()"
+        class="relative bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-2xl flex items-center gap-2">
+        <i class="fa-solid fa-cart-shopping"></i>
+        Pedido
+        <span id="contador-carrinho" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center">0</span>
+    </button>
+
+    <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 bg-orange-100 rounded-2xl flex items-center justify-center text-xl">👨‍🍳</div>
+                    <div class="text-sm">
+                        <p class="font-semibold text-gray-800">Restaurante Sabor da Semana</p>
+                        <p class="text-xs text-gray-500">Aberto hoje • Delivery grátis acima de R$ 80</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- FILTRO POR DIA DA SEMANA -->
+        <div class="mb-10">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-days text-orange-500"></i>
+                Filtre por dia da semana
+            </h2>
+            
+            <div id="filters" class="flex flex-wrap gap-3">
+                <!-- Botões serão gerados via JS -->
+            </div>
+        </div>
+
+        <!-- GRID DE CARDS -->
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Cards gerados via JS -->
+        </div>
+
+        <!-- MENSAGEM VAZIA -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-20 text-center">
+            <div class="text-7xl mb-6">📅</div>
+            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Nenhum prato encontrado</h3>
+            <p class="text-gray-500 max-w-xs">Não temos pratos cadastrados para este dia ainda. Tente outro dia da semana!</p>
+        </div>
+    </main>
+
+    <!-- MODAL PERFIL DA COMIDA -->
+    <div id="modal" onclick="if(event.target === this) closeModal()" 
+         class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] px-4">
+        
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal-content bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+            
+            <div class="relative">
+                <!-- Imagem grande -->
+                <img id="modal-image" 
+                     class="w-full h-80 object-cover" 
+                     alt="Prato">
+                
+                <!-- Botão fechar -->
+                <button onclick="closeModal()" 
+                        class="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-2xl flex items-center justify-center text-xl shadow-lg">
+                    ✕
+                </button>
+                
+                <!-- Preço flutuante -->
+                <div id="modal-price" 
+                     class="absolute top-6 left-6 bg-white text-orange-600 font-bold text-xl px-5 py-2 rounded-3xl shadow-md flex items-center gap-1">
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <h2 id="modal-name" class="text-3xl font-bold text-gray-900 mb-2"></h2>
+                
+                <div id="modal-short-desc" class="text-gray-600 text-lg mb-8"></div>
+                
+                <!-- Ingredientes -->
+                <div class="mb-8">
+                    <h3 class="uppercase text-xs font-semibold tracking-widest text-orange-600 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i>
+                        TODOS OS INGREDIENTES
+                    </h3>
+                    <ul id="modal-ingredients" class="grid grid-cols-2 gap-x-8 gap-y-3 text-gray-700">
+                        <!-- Preenchido via JS -->
+                    </ul>
+                </div>
+                
+                <!-- Informações extras -->
+                <div class="border-t pt-6 text-sm flex items-center justify-between text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-leaf text-emerald-500"></i>
+                        <span>100% fresco • Preparado na hora</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-truck"></i>
+                        <span>Entrega em até 45 min</span>
+                    </div>
+                    <button onclick="adicionarAoCarrinho()" 
+                            class="flex-1 max-w-[220px] bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 rounded-3xl flex items-center justify-center gap-3 text-lg shadow-lg">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        Adicionar ao pedido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DADOS DE EXEMPLO ====================
+        const menuItems = [
+            {
+                id: 1,
+                nome: "Feijoada Completa",
+                dia: "segunda-feira",
+                imagem: "https://guiadacozinha.com.br/wp-content/uploads/2020/01/feijoada-completa-tradicional.jpg",
+                descCurta: "Feijão preto com carnes nobres, arroz, farofa e couve",
+                preco: "R$ 52,90",
+                ingredientes: [
+                    "Feijão preto", "Carne seca", "Costela de porco", 
+                    "Linguiça calabresa", "Bacon defumado", "Pé de porco",
+                    "Arroz branco", "Farofa de mandioca", "Couve refogada"
+                ]
+            },
+            {
+                id: 2,
+                nome: "Bife à Milanesa com Fritas",
+                dia: "segunda-feira",
+                imagem: "https://www.vaisefood.com/wp-content/uploads/2015/03/Milaneza-con-papas-Corrientes-348-1-e1427811497461.jpg",
+                descCurta: "Bife empanado crocante, batata frita e salada",
+                preco: "R$ 38,90",
+                ingredientes: [
+                    "Bife de alcatra", "Farinha de rosca", "Ovos", 
+                    "Batata inglesa", "Alface", "Tomate", "Cebola roxa"
+                ]
+            },
+            
+            {
+                id: 3,
+                nome: "Strogonoff de Frango",
+                dia: "terça-feira",
+                imagem: "https://static.itdg.com.br/images/640-400/7e781068a839f15cdf1c85f18b3ea9d6/332854-original-1-1-.jpg",
+                descCurta: "Frango em molho cremoso com champignon e batata palha",
+                preco: "R$ 42,90",
+                ingredientes: [
+                    "Filé de frango", "Creme de leite", "Champignon", 
+                    "Cebola", "Alho", "Mostarda", "Batata palha", "Arroz"
+                ]
+            },
+            {
+                id: 4,
+                nome: "Lasanha à Bolonhesa",
+                dia: "terça-feira",
+                imagem: "https://guiadacozinha.com.br/wp-content/uploads/2018/12/Lasanha-a-bolonhesa-com-massa-de-pastel.jpg",
+                descCurta: "Camadas de massa, carne moída e molho bechamel",
+                preco: "R$ 46,90",
+                ingredientes: [
+                    "Massa de lasanha", "Carne moída", "Molho de tomate", 
+                    "Queijo mussarela", "Queijo parmesão", "Molho branco"
+                ]
+            },
+            
+            {
+                id: 5,
+                nome: "Bobó de Camarão",
+                dia: "quarta-feira",
+                imagem: "https://static.itdg.com.br/images/640-400/86e54952cc3588f6a399de44cc257a67/shutterstock-1957033096.jpg",
+                descCurta: "Camarão com purê de mandioca e dendê",
+                preco: "R$ 59,90",
+                ingredientes: [
+                    "Camarão rosa", "Mandioca", "Leite de coco", 
+                    "Azeite de dendê", "Tomate", "Pimentão", "Coentro"
+                ]
+            },
+            {
+                id: 6,
+                nome: "Risoto de Cogumelos",
+                dia: "quarta-feira",
+                imagem: "https://gresgastronomia.com.br/wp-content/uploads/2024/07/risoto-de-cogumelos-receita-e-curiosidades-735f.webp",
+                descCurta: "Arroz arbóreo com mix de cogumelos e parmesão",
+                preco: "R$ 44,90",
+                ingredientes: [
+                    "Arroz arbóreo", "Cogumelos shitake", "Cogumelos paris", 
+                    "Cebola", "Vinho branco", "Caldo de legumes", "Parmesão"
+                ]
+            },
+            
+            {
+                id: 7,
+                nome: "Peixe Grelhado com Legumes",
+                dia: "quinta-feira",
+                imagem: "https://guiadacozinha.com.br/wp-content/uploads/2018/09/peixegrelhadocomlegumes.jpg",
+                descCurta: "Filé de salmão grelhado com legumes no vapor",
+                preco: "R$ 55,90",
+                ingredientes: [
+                    "Filé de salmão", "Brócolis", "Cenoura", "Abobrinha", 
+                    "Azeite extra virgem", "Limão siciliano", "Ervas finas"
+                ]
+            },
+            {
+                id: 8,
+                nome: "Frango Xadrez",
+                dia: "quinta-feira",
+                imagem: "https://static.itdg.com.br/images/640-400/8785ec793599557587d51a0b7483eb0a/344249-original.jpg",
+                descCurta: "Frango com pimentão, amendoim e molho agridoce",
+                preco: "R$ 41,90",
+                ingredientes: [
+                    "Peito de frango", "Pimentão vermelho", "Pimentão verde", 
+                    "Cebola", "Amendoim torrado", "Molho de soja", "Gengibre"
+                ]
+            },
+            
+            {
+                id: 9,
+                nome: "Picanha na Chapa",
+                dia: "sexta-feira",
+                imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjIj9YF_8jncKLriRisI6Q8Y9HDFTgd8Fuzw&s",
+                descCurta: "Picanha suculenta com arroz, feijão e vinagrete",
+                preco: "R$ 64,90",
+                ingredientes: [
+                    "Picanha", "Arroz branco", "Feijão carioca", 
+                    "Farofa", "Vinagrete", "Alface", "Tomate"
+                ]
+            },
+            {
+                id: 10,
+                nome: "Moqueca de Peixe",
+                dia: "sexta-feira",
+                imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuDMB4bmLFrbcNBF7y8IiryC6Yli-QaRLgxw&s",
+                descCurta: "Peixe com leite de coco, dendê e camarão",
+                preco: "R$ 58,90",
+                ingredientes: [
+                    "Filé de robalo", "Leite de coco", "Azeite de dendê", 
+                    "Tomate", "Pimentão", "Cebola", "Coentro fresco"
+                ]
+            },
+            
+            {
+                id: 11,
+                nome: "Churrasco Misto",
+                dia: "sábado",
+                imagem: "https://imagens.jotaja.com/produtos/b321a85f-607e-493c-a0b3-71f96812ed63.jpg",
+                descCurta: "Carne, frango e linguiça com farofa e vinagrete",
+                preco: "R$ 69,90",
+                ingredientes: [
+                    "Picanha", "Frango", "Linguiça", "Costela", 
+                    "Farofa", "Vinagrete", "Arroz branco"
+                ]
+            },
+            {
+                id: 12,
+                nome: "Costela Assada",
+                dia: "sábado",
+                imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsW1LkqwfP-DooivIXZ4NTch9uQH6UFk39uQ&s",
+                descCurta: "Costela bovina assada lentamente com mandioca",
+                preco: "R$ 67,90",
+                ingredientes: [
+                    "Costela bovina", "Mandioca", "Alho", "Alecrim", 
+                    "Sal grosso", "Pimenta-do-reino"
+                ]
+            },
+            
+            {
+                id: 13,
+                nome: "Macarrão à Bolonhesa",
+                dia: "domingo",
+                imagem: "https://guiadacozinha.com.br/wp-content/uploads/2018/06/espagueteabolonhesa.webp",
+                descCurta: "Espaguete com molho de carne e parmesão",
+                preco: "R$ 36,90",
+                ingredientes: [
+                    "Espaguete", "Carne moída", "Molho de tomate", 
+                    "Cebola", "Alho", "Manjericão", "Queijo parmesão"
+                ]
+            },
+            {
+                id: 14,
+                nome: "Feijão Tropeiro",
+                dia: "domingo",
+                imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl2UB1TaEI40VX9YP1zRRFDAkYIxDuoErhpQ&s",
+                descCurta: "Feijão com linguiça, ovo e farofa de torresmo",
+                preco: "R$ 39,90",
+                ingredientes: [
+                    "Feijão carioca", "Linguiça", "Ovo", "Torresmo", 
+                    "Couve", "Arroz", "Farofa"
+                ]
+            }
+        ];
+
+        // Dias da semana (ordem real)
+        const diasSemana = [
+            { key: "todos", label: "Todos os dias", icon: "🌐" },
+            { key: "pizzas", label: "Pizzas", icon: "🍕" },
+            { key: "segunda-feira", label: "Segunda-feira", icon: "📅" },
+            { key: "terça-feira", label: "Terça-feira", icon: "📅" },
+            { key: "quarta-feira", label: "Quarta-feira", icon: "📅" },
+            { key: "quinta-feira", label: "Quinta-feira", icon: "📅" },
+            { key: "sexta-feira", label: "Sexta-feira", icon: "📅" },
+            { key: "sábado", label: "Sábado", icon: "📅" },
+            { key: "domingo", label: "Domingo", icon: "📅" }
+        ];
+
+        let filtroAtual = "todos";
+let carrinho = [];
+let produtoSelecionado = null;
+const whatsappRestaurante = "553799794110";
+
+        // ==================== FUNÇÕES ====================
+        function renderFilters() {
+            const container = document.getElementById("filters");
+            container.innerHTML = "";
+            
+            diasSemana.forEach(dia => {
+                const btn = document.createElement("button");
+                btn.className = `filter-btn flex items-center gap-2 px-6 py-3 rounded-3xl text-sm font-medium border border-orange-200 hover:border-orange-300 ${filtroAtual === dia.key ? 'active' : 'bg-white text-gray-700'}`;
+                btn.innerHTML = `
+                    <span class="text-xl">${dia.icon}</span>
+                    ${dia.label}
+                `;
+                btn.onclick = () => {
+                    filtroAtual = dia.key;
+                    renderFilters(); // atualiza visual
+                    renderMenu();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderMenu() {
+            const grid = document.getElementById("menu-grid");
+            const empty = document.getElementById("empty-state");
+            grid.innerHTML = "";
+            
+            const filtered = filtroAtual === "todos" 
+                ? menuItems 
+                : menuItems.filter(item => item.dia === filtroAtual);
+            
+            if (filtered.length === 0) {
+                empty.classList.remove("hidden");
+                return;
+            }
+            
+            empty.classList.add("hidden");
+            
+            filtered.forEach(item => {
+                const cardHTML = `
+                <div class="card bg-white rounded-3xl overflow-hidden shadow-md cursor-pointer group">
+                    <div class="relative">
+                        <img src="${item.imagem}" 
+                             onclick="openModal(${item.id}); event.stopImmediatePropagation();"
+                             class="w-full h-56 object-cover group-hover:scale-105" 
+                             alt="${item.nome}">
+                        
+                        <!-- Badge do dia -->
+                        <div class="absolute top-4 left-4 bg-white/90 text-xs font-bold px-3 py-1 rounded-2xl flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-calendar text-orange-500"></i>
+                            ${item.dia.split('-')[0]}
+                        </div>
+                        
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-sm font-bold px-4 py-1 rounded-3xl">
+                            ${item.preco}
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <h3 class="font-semibold text-xl text-gray-900 mb-1">${item.nome}</h3>
+                        <p class="text-gray-600 text-sm line-clamp-2">${item.descCurta}</p>
+                        
+                        <div onclick="openModal(${item.id}); event.stopImmediatePropagation();" 
+                             class="mt-6 flex items-center justify-center gap-2 text-orange-600 hover:text-orange-700 font-medium text-sm uppercase tracking-widest">
+                            <span>Ver ingredientes completos</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>`;
+                
+                grid.innerHTML += cardHTML;
+            });
+        }
+
+        function openModal(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (!item) return;
+            produtoSelecionado = item;
+            
+            document.getElementById("modal-image").src = item.imagem;
+            document.getElementById("modal-name").textContent = item.nome;
+            document.getElementById("modal-short-desc").textContent = item.descCurta;
+            document.getElementById("modal-price").innerHTML = `
+                <i class="fa-solid fa-tag"></i> ${item.preco}
+            `;
+            
+            // Ingredientes
+            const ul = document.getElementById("modal-ingredients");
+            ul.innerHTML = "";
+            
+            item.ingredientes.forEach(ing => {
+                const li = document.createElement("li");
+                li.className = "flex items-center gap-3";
+                li.innerHTML = `
+                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                    <span>${ing}</span>
+                `;
+                ul.appendChild(li);
+            });
+            
+            document.getElementById("modal").classList.remove("hidden");
+            document.getElementById("modal").classList.add("flex");
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function adicionarAoCarrinho() {
+            if (!produtoSelecionado) return;
+            carrinho.push(produtoSelecionado);
+            alert(`✅ ${produtoSelecionado.nome} adicionado ao carrinho!`);
+            closeModal();
+            atualizarCarrinho();
+        }
+
+        
+        function atualizarCarrinho() {
+            const contador = document.getElementById("contador-carrinho");
+            if (contador) contador.textContent = carrinho.length;
+        }
+
+        function finalizarPedido() {
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+
+            const nomeCliente = prompt("Digite seu nome:");
+            if (!nomeCliente) return;
+
+            let mensagem = `🍽️ *NOVO PEDIDO*%0A%0A👤 Cliente: ${nomeCliente}%0A%0A📋 Pedido:%0A`;
+
+            carrinho.forEach((item, index) => {
+                mensagem += `${index + 1}. ${item.nome} - ${item.preco}%0A`;
+            });
+
+            window.open(`https://wa.me/${whatsappRestaurante}?text=${mensagem}`, "_blank");
+        }
+
+        // Atualiza hora atual no header
+        function updateClock() {
+            const el = document.getElementById("hora-atual");
+            setInterval(() => {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                el.textContent = `${hours}:${minutes}`;
+            }, 1000);
+        }
+
+        // ==================== INICIALIZAÇÃO ====================
+        function init() {
+            renderFilters();
+            renderMenu();
+            updateClock();
+            
+            // Tecla ESC fecha modal
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeModal();
+            });
+            
+            console.log("%c✅ Site de Menu Online carregado com sucesso! Responsivo, filtro por dia e modal de ingredientes funcionando.", "color: #f97316; font-family: monospace");
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>
