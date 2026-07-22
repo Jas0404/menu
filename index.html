@@ -8,7 +8,151 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&display=swap');
-        
+        /* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+    /* Header */
+    header .max-w-7xl {
+        flex-direction: column;
+        gap: 15px;
+        padding: 12px;
+    }
+
+    header h1 {
+        font-size: 1.7rem !important;
+    }
+
+    header p {
+        text-align: center;
+    }
+
+    /* Esconde infos extras */
+    .hidden.md\:flex {
+        display: none !important;
+    }
+
+    /* Restaurante */
+    header .flex.items-center.gap-2:last-child {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Botão pedido */
+    button[onclick="finalizarPedido()"] {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    /* Main */
+    main {
+        padding: 15px !important;
+    }
+
+    /* Filtros */
+    #filters {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+        scrollbar-width: none;
+    }
+
+    #filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 16px !important;
+        font-size: 13px !important;
+    }
+
+    /* Grid */
+    #menu-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+
+    /* Cards */
+    .card img {
+        height: 220px !important;
+    }
+
+    .card h3 {
+        font-size: 1.1rem;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 100% !important;
+        max-height: 95vh !important;
+        border-radius: 20px;
+    }
+
+    #modal-image {
+        height: 220px !important;
+    }
+
+    #modal-name {
+        font-size: 1.6rem !important;
+    }
+
+    #modal .p-8 {
+        padding: 20px !important;
+    }
+
+    /* Ingredientes */
+    #modal-ingredients {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    /* Rodapé do modal */
+    #modal .border-t {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    #modal .border-t button {
+        max-width: 100% !important;
+        width: 100%;
+    }
+
+}
+
+/* CELULARES PEQUENOS */
+
+@media (max-width: 480px) {
+
+    header h1 {
+        font-size: 1.4rem !important;
+    }
+
+    .card img {
+        height: 190px !important;
+    }
+
+    #modal-image {
+        height: 180px !important;
+    }
+
+    #modal-name {
+        font-size: 1.3rem !important;
+    }
+
+    .filter-btn {
+        font-size: 12px !important;
+        padding: 8px 14px !important;
+    }
+
+}
         :root {
             --primary: #f97316;
         }
@@ -100,8 +244,7 @@
         </div>
 
         <!-- GRID DE CARDS -->
-        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <!-- Cards gerados via JS -->
+<div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">            <!-- Cards gerados via JS -->
         </div>
 
         <!-- MENSAGEM VAZIA -->
