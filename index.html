@@ -7,196 +7,638 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&display=swap');
-        /* ================= MOBILE ================= */
+/* ===============================
+   RESET GERAL
+================================ */
 
-@media (max-width: 768px) {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
-    /* Header */
-    header .max-w-7xl {
-        flex-direction: column;
-        gap: 15px;
-        padding: 12px;
+:root {
+    --primary: #f97316;
+    --primary-dark: #ea580c;
+    --secondary: #fff7ed;
+    --text: #1f2937;
+    --gray: #6b7280;
+    --success: #10b981;
+}
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #fff7ed;
+    color: var(--text);
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+header {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.9);
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -1px;
+}
+
+header button {
+    transition: .3s ease;
+}
+
+header button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ===============================
+   BOTÃO CARRINHO
+================================ */
+
+#contador-carrinho {
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:700;
+
+    animation:pulseCart 1.8s infinite;
+}
+
+
+@keyframes pulseCart {
+
+    0%{
+        transform:scale(1);
     }
 
-    header h1 {
-        font-size: 1.7rem !important;
+    50%{
+        transform:scale(1.15);
     }
 
-    header p {
-        text-align: center;
-    }
-
-    /* Esconde infos extras */
-    .hidden.md\:flex {
-        display: none !important;
-    }
-
-    /* Restaurante */
-    header .flex.items-center.gap-2:last-child {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
-    }
-
-    /* Botão pedido */
-    button[onclick="finalizarPedido()"] {
-        width: 100%;
-        justify-content: center;
-        padding: 14px;
-        font-size: 1rem;
-    }
-
-    /* Main */
-    main {
-        padding: 15px !important;
-    }
-
-    /* Filtros */
-    #filters {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 10px;
-        padding-bottom: 10px;
-        scrollbar-width: none;
-    }
-
-    #filters::-webkit-scrollbar {
-        display: none;
-    }
-
-    .filter-btn {
-        flex-shrink: 0;
-        white-space: nowrap;
-        padding: 10px 16px !important;
-        font-size: 13px !important;
-    }
-
-    /* Grid */
-    #menu-grid {
-        grid-template-columns: 1fr !important;
-        gap: 18px !important;
-    }
-
-    /* Cards */
-    .card img {
-        height: 220px !important;
-    }
-
-    .card h3 {
-        font-size: 1.1rem;
-    }
-
-    /* Modal */
-    .modal-content {
-        width: 100% !important;
-        max-height: 95vh !important;
-        border-radius: 20px;
-    }
-
-    #modal-image {
-        height: 220px !important;
-    }
-
-    #modal-name {
-        font-size: 1.6rem !important;
-    }
-
-    #modal .p-8 {
-        padding: 20px !important;
-    }
-
-    /* Ingredientes */
-    #modal-ingredients {
-        grid-template-columns: 1fr !important;
-        gap: 10px !important;
-    }
-
-    /* Rodapé do modal */
-    #modal .border-t {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
-    }
-
-    #modal .border-t button {
-        max-width: 100% !important;
-        width: 100%;
+    100%{
+        transform:scale(1);
     }
 
 }
 
-/* CELULARES PEQUENOS */
 
-@media (max-width: 480px) {
 
-    header h1 {
-        font-size: 1.4rem !important;
+/* ===============================
+   FILTROS
+================================ */
+
+#filters {
+
+    padding-bottom:5px;
+
+}
+
+
+.filter-btn {
+
+    cursor:pointer;
+
+    background:white;
+
+    border:1px solid #fed7aa;
+
+    color:#374151;
+
+    transition:.25s ease;
+
+}
+
+
+.filter-btn:hover {
+
+    background:#fff7ed;
+
+    border-color:#fb923c;
+
+    transform:translateY(-3px);
+
+}
+
+
+.filter-btn.active {
+
+    background:linear-gradient(
+        135deg,
+        #f97316,
+        #ea580c
+    );
+
+    color:white;
+
+    border:none;
+
+    box-shadow:
+    0 10px 25px rgba(249,115,22,.35);
+
+}
+
+
+
+
+/* ===============================
+   CARDS DOS PRATOS
+================================ */
+
+
+.card {
+
+    overflow:hidden;
+
+    background:white;
+
+    border-radius:25px;
+
+    cursor:pointer;
+
+    transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+
+}
+
+
+.card:hover {
+
+    transform:
+    translateY(-10px);
+
+    box-shadow:
+    0 25px 50px rgba(0,0,0,.12);
+
+}
+
+
+
+.card img {
+
+    width:100%;
+
+    height:240px;
+
+    object-fit:cover;
+
+    transition:.5s ease;
+
+}
+
+
+
+.card:hover img {
+
+    transform:scale(1.08);
+
+}
+
+
+
+.card h3 {
+
+    font-family:
+    'Playfair Display',
+    serif;
+
+}
+
+
+
+.card p {
+
+    line-height:1.6;
+
+}
+
+
+
+
+/* ===============================
+   PREÇO DO CARD
+================================ */
+
+
+.card .absolute.top-4.right-4 {
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #f97316,
+    #fb923c
+    );
+
+
+    box-shadow:
+    0 8px 20px rgba(249,115,22,.35);
+
+}
+
+
+
+/* ===============================
+   MODAL
+================================ */
+
+
+#modal {
+
+    backdrop-filter:
+    blur(8px);
+
+}
+
+
+
+.modal-content {
+
+    animation:
+    modalShow .35s ease;
+
+}
+
+
+
+@keyframes modalShow {
+
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(40px)
+        scale(.95);
+
     }
 
-    .card img {
-        height: 190px !important;
-    }
 
-    #modal-image {
-        height: 180px !important;
-    }
+    to {
 
-    #modal-name {
-        font-size: 1.3rem !important;
-    }
+        opacity:1;
 
-    .filter-btn {
-        font-size: 12px !important;
-        padding: 8px 14px !important;
+        transform:
+        translateY(0)
+        scale(1);
+
     }
 
 }
-        :root {
-            --primary: #f97316;
-        }
-        
-        * {
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
-        }
-        
-        .card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgb(249 115 22 / 0.25);
-        }
-        
-        .modal-content {
-            animation: modalPop 0.3s ease forwards;
-        }
-        
-        @keyframes modalPop {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
-        .filter-btn {
-            transition: all 0.2s ease;
-        }
-        
-        .filter-btn.active {
-            background-color: #f97316;
-            color: white;
-            box-shadow: 0 10px 15px -3px rgb(249 115 22 / 0.3);
-        }
+
+
+
+#modal-image {
+
+    object-fit:cover;
+
+}
+
+
+
+#modal-name {
+
+    font-family:
+    'Playfair Display',
+    serif;
+
+}
+
+
+
+#modal-ingredients li {
+
+
+    background:#fff7ed;
+
+    padding:10px 14px;
+
+    border-radius:15px;
+
+    transition:.2s;
+
+}
+
+
+
+#modal-ingredients li:hover {
+
+    transform:
+    translateX(5px);
+
+    background:#ffedd5;
+
+}
+
+
+
+/* ===============================
+   BOTÃO ADICIONAR PEDIDO
+================================ */
+
+
+button.bg-orange-500 {
+
+
+    background:
+    linear-gradient(
+        135deg,
+        #f97316,
+        #ea580c
+    );
+
+
+    transition:.3s;
+
+}
+
+
+
+button.bg-orange-500:hover {
+
+
+    transform:
+    translateY(-3px);
+
+    box-shadow:
+    0 15px 30px rgba(249,115,22,.4);
+
+}
+
+
+
+/* ===============================
+   ESTADO VAZIO
+================================ */
+
+
+#empty-state {
+
+    animation:
+    fade .4s ease;
+
+}
+
+
+@keyframes fade {
+
+
+from {
+
+opacity:0;
+
+}
+
+
+to {
+
+opacity:1;
+
+}
+
+
+}
+
+
+
+
+
+/* ===============================
+   SCROLL PERSONALIZADO
+================================ */
+
+
+::-webkit-scrollbar {
+
+width:8px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+background:#ffedd5;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+background:#fb923c;
+
+border-radius:20px;
+
+}
+
+
+
+
+/* ===============================
+   RESPONSIVIDADE TABLET
+================================ */
+
+
+@media(max-width:900px){
+
+
+header .max-w-7xl {
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+header .flex.items-center.gap-6 {
+
+    width:100%;
+
+    justify-content:center;
+
+}
+
+
+.card img {
+
+    height:220px;
+
+}
+
+
+
+}
+
+
+
+/* ===============================
+   RESPONSIVIDADE CELULAR
+================================ */
+
+
+@media(max-width:600px){
+
+
+body {
+
+    font-size:14px;
+
+}
+
+
+
+header h1 {
+
+    font-size:1.7rem!important;
+
+}
+
+
+main {
+
+    padding-left:15px!important;
+
+    padding-right:15px!important;
+
+}
+
+
+
+#filters {
+
+    overflow-x:auto;
+
+    flex-wrap:nowrap;
+
+}
+
+
+.filter-btn {
+
+    flex-shrink:0;
+
+    padding:10px 16px!important;
+
+}
+
+
+
+.card {
+
+    border-radius:20px;
+
+}
+
+
+
+.card img {
+
+    height:190px;
+
+}
+
+
+
+.modal-content {
+
+    width:95%!important;
+
+    border-radius:22px;
+
+}
+
+
+
+#modal-image {
+
+    height:190px!important;
+
+}
+
+
+
+#modal-name {
+
+    font-size:1.5rem!important;
+
+}
+
+
+
+#modal-ingredients {
+
+    grid-template-columns:1fr!important;
+
+}
+
+
+
+.border-t.pt-6 {
+
+    flex-direction:column;
+
+}
+
+
+
+.border-t.pt-6 button {
+
+    width:100%;
+
+    max-width:none!important;
+
+}
+
+
+}
+
+
+
+/* ===============================
+   CELULARES PEQUENOS
+================================ */
+
+
+@media(max-width:380px){
+
+
+.card img {
+
+    height:160px;
+
+}
+
+
+header p {
+
+    font-size:11px;
+
+}
+
+
+.filter-btn {
+
+    font-size:12px;
+
+}
+
+
+}
     </style>
 </head>
 <body class="bg-orange-50 font-sans">
     <!-- HEADER -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-5 flex items-center justify-between flex-wrap">            <div class="flex items-center gap-3">
                 <div class="">
                     🍽️
                 </div>
@@ -244,7 +686,7 @@
         </div>
 
         <!-- GRID DE CARDS -->
-<div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">            <!-- Cards gerados via JS -->
+<div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">            <!-- Cards gerados via JS -->
         </div>
 
         <!-- MENSAGEM VAZIA -->
@@ -512,7 +954,7 @@
         let filtroAtual = "todos";
 let carrinho = [];
 let produtoSelecionado = null;
-const whatsappRestaurante = "553799794110";
+const whatsappRestaurante = "5537984091833";
 
         // ==================== FUNÇÕES ====================
         function renderFilters() {
@@ -557,7 +999,6 @@ const whatsappRestaurante = "553799794110";
                     <div class="relative">
                         <img src="${item.imagem}" 
                              onclick="openModal(${item.id}); event.stopImmediatePropagation();"
-                             class="w-full h-56 object-cover group-hover:scale-105" 
                              alt="${item.nome}">
                         
                         <!-- Badge do dia -->
@@ -646,7 +1087,7 @@ const whatsappRestaurante = "553799794110";
             const nomeCliente = prompt("Digite seu nome:");
             if (!nomeCliente) return;
 
-            let mensagem = `🍽️ *NOVO PEDIDO*%0A%0A👤 Cliente: ${nomeCliente}%0A%0A📋 Pedido:%0A`;
+            let mensagem = `😉 *NOVO PEDIDO*%0A%0A👤 Cliente: ${nomeCliente}%0A%0A 📋 Pedido:%0A`;
 
             carrinho.forEach((item, index) => {
                 mensagem += `${index + 1}. ${item.nome} - ${item.preco}%0A`;
